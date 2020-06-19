@@ -8,6 +8,7 @@ import (
 	protos "github.com/harshthakur9030/grpc-primer/unary/protos"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/status"
 )
 
 func main() {
@@ -37,8 +38,22 @@ func main() {
 
 	lc := protos.NewLookupClient(conn)
 
-	person := &protos.Person{Name: "CNCF"}
+	// person := &protos.Person{Name: "CNCF"}
+	// res, err = lc.Find(context.Background(), person)
+	// if err != nil {
+	// 	return err
+	// }
+
+	person := &protos.Person{Name: "grpc"}
 	res, err = lc.Find(context.Background(), person)
+	if err != nil {
+		if s, ok := status.FromError(err); ok {
+			md := s.Details()[0]
+			log.Infof("Metadata is %v", md)
+			log.Error(err)
+		}
+
+	}
 
 	log.Info(res.GetExist())
 
