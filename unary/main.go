@@ -22,6 +22,7 @@ func main() {
 	// This helps clients determine which services are available to call( like robots.txt but for gRPC)
 	reflection.Register(gs)
 
+	// Register the name of the service to the server
 	protos.RegisterWelcomeServer(gs, &welcome{})
 
 	protos.RegisterLookupServer(gs, &lookup{})
@@ -39,32 +40,32 @@ func main() {
 type welcome struct {
 }
 
-// First Example
-func (w *welcome) World(ctx context.Context, null *protos.Null) (*protos.Person, error) {
-
-	name := "CNCF and Hashicorp User group"
-
-	return &protos.Person{
-		Name: name,
-	}, nil
-}
-
-// Second example
+// // First Example
 // func (w *welcome) World(ctx context.Context, null *protos.Null) (*protos.Person, error) {
 
 // 	name := "CNCF and Hashicorp User group"
 
-// 	names := make([]string, 0)
-
-// 	names = append(names, "CNCF")
-
-// 	names = append(names, "Hashicorp")
-
 // 	return &protos.Person{
-// 		Name:  name,
-// 		Names: names,
+// 		Name: name,
 // 	}, nil
 // }
+
+// Second example
+func (w *welcome) World(ctx context.Context, null *protos.Null) (*protos.Person, error) {
+
+	name := "CNCF and Hashicorp User group"
+
+	names := make([]string, 0)
+
+	names = append(names, "CNCF")
+
+	names = append(names, "Hashicorp")
+
+	return &protos.Person{
+		Name:  name,
+		Names: names,
+	}, nil
+}
 
 // Third example
 
